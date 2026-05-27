@@ -1,0 +1,37 @@
+name: CI - Integração Contínua
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Teste e Validação
+    runs-on: ubuntu-latest # Cria uma máquina virtual Linux novinha para nós
+
+    steps:
+      # Passo A: Baixar o seu código para dentro da máquina virtual
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Validar estrutura do site
+        run: |
+          echo "Iniciando a bateria de testes..."
+          
+          # Teste 1: Verifica se o arquivo index.html existe na pasta correta
+          if [ -f "site/index.html" ]; then
+            echo "✅ SUCESSO: O arquivo site/index.html foi encontrado!"
+          else
+            echo "❌ ERRO: O arquivo site/index.html NÃO existe. Verifique a estrutura de pastas."
+            exit 1
+          fi
+
+          if grep -qi "<html" site/index.html; then
+            echo "✅ SUCESSO: O arquivo possui uma estrutura HTML válida!"
+          else
+            echo "❌ ERRO: A tag HTML obrigatória não foi encontrada no arquivo."
+            exit 1
+          fi
+          
+          echo "🚀 Todos os testes passaram! CI concluído com sucesso."
