@@ -1,0 +1,17 @@
+name: Pipeline CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validar-site:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v4
+
+      - name: Validar HTML
+        run: test -f site/index.html
